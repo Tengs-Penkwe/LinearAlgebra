@@ -1,5 +1,13 @@
 #import "template.typ": *
 #import "@preview/algo:0.3.1": algo, i, d, comment, code
+#import "@preview/lemmify:0.1.2": *
+#let (
+  definition,
+  theorem, lemma, corollary,
+  remark, proposition, example,
+  proof, rules: thm-rules
+) = default-theorems("thm-group", lang: "en")
+#show: thm-rules
 
 #show: project.with(
   title: "Linear Algebra Done Right",
@@ -94,13 +102,12 @@ $FF^n$
   $ alpha + beta &= (a_1 + a_2 i) + (-a_1 -a_2 i)\ 
   &= (a_1 -a_1) + (a_2 -a_2)i \
   &= 0
-  $\
+  $
   Proof of uniqueness: suppose there is another $lambda$ that $alpha + lambda = 0$
   $ alpha + lambda = 0 & arrow.l.r.double\
   alpha + lambda = alpha + beta & arrow.l.r.double\
   lambda = beta &
-  $
-  ]
+  $]
 
 8. Show that for each $alpha in CC$ with $alpha != 0$, there exists a unique $beta in CC$ such that $alpha beta = 1$
 
@@ -135,4 +142,65 @@ $FF^n$
 
 == Vector Space
 
+A *Vector Space* is set $V$ along with an addition and a scalar multiplication on $V$ such that
+- commutativity
+- associativity
+- additive identity
+- additive inverse
+- multiplicative identity
+- distributive
 
+1. Prove that $-(-v)=v$ for every $v in V$.
+  
+  #answer[It means the _additive inverse_ of $-v$ is $v$.]
+  #wrong[$ -v +v = -1v+1v = (-1+1)v = 0v =0 $]
+
+2. Suppose $a in FF, v in V$, and $a\v=0$, Prove that $a=0 "or" v=0$.
+
+  #answer[If $a=0 "or" v=0$ then $a\v=0$.\ Assume that $a!=0 "and" v!=0$]
+  #wrong[then $a$ have inverse $a^(-1)$ such that $a^(-1)a=1$ $ v=1v=(a^(-1)a)v=a^(-1)a\v $ If $a\v=0$, then $v=0$, contradiction. ]
+
+3. Suppose $v, w in V$. Explain why there exists a unique $x in V$ such that $v + 3x = w$.
+
+  #answer[Proof of Existence:
+  let $x=(w-v)/3$, then $v+ 3x =w$.\
+  Proof of uniqueness: assume there is another $x'$ such that $v +3x' =w$]
+  #wrong[$ v + 3x = w = v + 3x' arrow.r.l.double 3x = 3x' arrow.l.r.double x = x' $]
+
+4. The empty set is not a vector space, why ?
+
+  #wrong[_additive identity_: it means there is at least an element $0 in V$]
+
+5. Show that in the definition of a vector space (1.19), the additive inverse condition can be replaced with the condition that $ 0v = 0 $ for all $v in V$: Here the 0 on the left side is the number 0, and the 0 on the right side is the additive identity of $V$. 
+
+  #answer[$ 0v = (1-1)v = v - v = 0 arrow.l.r.double \
+  v = 0 + v = v + 0
+  $]
+
+6. Let $oo$ and $-oo$ denote two distinct objects, neither of which is in $RR$. Define an addition and scalar multiplication on $RR union {oo} union {-oo}$ as you could guess from the notation. Specifically, the sum and product of two real numbers is as usual, and for $t in RR$ define $ t oo = cases(-oo &"if" t<0, 0 &"if" t=0, oo &"if" t>0) space.quad t(-oo)=cases(oo &"if" t<0, 0 &"if" t=0, -oo &"if" t>0)\ t + oo = oo+t=oo, space.quad t+(-oo) = (-oo) + t = -oo,\ oo + oo = oo, space.quad (-oo)+(-oo)=-oo, space.quad oo+(-oo) =0 $ Is $R union {oo} union {-oo}$ a vector space over $RR$ ? Explain.
+
+  #answer[This is not a vector space, because $ [2+(-1)]oo = 2oo-oo=0 !=oo$]
+
+== Subspaces
+
+A subset $U$ of $V$ is a subspace of $V$ if $U$ is also a vector space.
+- additive identity
+- close under addition
+- close under scalar multiplication
+
+#definition(name: "Direct Sum")[
+  If each elem of $U_1, ... U_m$ can be written in only one way as a sum $ u_1 + ...+ u_m $ where each $u_j$ is in $U_j$ .
+]<thm>
+
+#theorem(name: "Condition for a direct sum")[Suppose $U_1,...,U_m$ are subspaces of $V$. Then $U_1 + ... + U_m$ is a direct sum if and only if the only way to write 0 as a sum $u_1 +...+ u_m$, where each $u_j$ is in $U_j$, is by taking each $u_j$ equal to 0.]
+
+#proof[]
+
+#set enum(numbering: "1.a)")
+1.  For each of the following subsets of $FF^3$, determine whether it is a subspace of $FF^3$:
+  + ${(x_1, x_2, x_3) in FF^3: x_1+2x_2+3x_3 = 0}$
+  + ${(x_1, x_2, x_3) in FF^3: x_1+2x_2+3x_3 = 4}$
+  + ${(x_1, x_2, x_3) in FF^3: x_1x_2x_3 = 0}$
+  + ${(x_1, x_2, x_3) in FF^3: x_1 = 5x_3}$ 
+
+  #answer[]
